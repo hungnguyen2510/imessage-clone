@@ -4,6 +4,7 @@ import "../Imessage.css";
 import Chat from "./Chat";
 
 const Imessage = () => {
+  
   return (
     <div className="iMessage">
       {/*Sidebar */}

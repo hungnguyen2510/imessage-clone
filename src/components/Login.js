@@ -5,7 +5,10 @@ import "../Login.css";
 
 const Login = () => {
   const signIn = () => {
-    auth.signInWithPopup(provider).catch((err) => alert(err.message));
+    auth
+      .signInWithPopup(provider)
+      // .then((auth) => console.log(auth))
+      .catch((err) => alert(err.message));
   };
   return (
     <div className="login">
