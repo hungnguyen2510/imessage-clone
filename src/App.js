@@ -20,7 +20,7 @@ function App() {
             uid: authUser.uid,
             photo: authUser.photoURL,
             email: authUser.email,
-            display: authUser.displayName,
+            displayName: authUser.displayName,
           })
         );
       } else {

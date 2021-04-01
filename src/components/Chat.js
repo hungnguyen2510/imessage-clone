@@ -1,36 +1,71 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../Chat.css";
 import MicNoneIcon from "@material-ui/icons/MicNone";
-import {IconButton} from "@material-ui/core"
+import { IconButton } from "@material-ui/core";
+import Message from "./Message";
+import { useChatId, useChatName } from "../features/chatSlice";
+import db from "./../firebase";
+import firebase from "firebase";
+import { useUser } from "./../features/userSlice";
 
 const Chat = () => {
-  const [message, setMessage] = useState("");
+  const [input, setInput] = useState("");
+  const [messages, setMessage] = useState([]);
+  const user = useUser();
+  const chatName = useChatName();
+  const chatId = useChatId();
+
+  useEffect(() => {
+    if (chatId) {
+      db.collection("chats")
+        .doc(chatId)
+        .collection("messages")
+        .orderBy("timestamp", "desc")
+        .onSnapshot((snapshot) =>
+          setMessage(
+            snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() }))
+          )
+        );
+    }
+  }, [chatId]);
+
   const sendMessage = (e) => {
     e.preventDefault();
-    // console.log(message);
+
+    db.collection("chats").doc(chatId).collection("messages").add({
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      message: input,
+      uid: user.uid,
+      photo: user.photo,
+      email: user.email,
+      displayName: user.displayName,
+    });
+
     //Firebase...
-    setMessage("");
+    setInput("");
   };
   return (
     <div className="chat">
       {/* Chat Header */}
       <div className="chat_header">
         <h4>
-          To: <span className="chat_channelName">Mer</span>
+          To: <span className="chat_channelName">{chatName}</span>
         </h4>
         <strong>Details</strong>
       </div>
       {/* Chat Messages */}
       <div className="chat_messages">
-          <h2>message</h2>
+        {messages.map(({ id, data }) => (
+          <Message key={id} content={data} />
+        ))}
       </div>
       {/* Chat Input */}
       <div className="chat_input">
         <form action="">
           <input
             placeholder="iMessage"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
             type="text"
           />
           <button onClick={sendMessage}>Send Messages</button>
