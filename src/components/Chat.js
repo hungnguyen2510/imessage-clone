@@ -17,7 +17,8 @@ const Chat = () => {
 
   useEffect(() => {
     if (chatId) {
-      db.collection("chats")
+      return db
+        .collection("chats")
         .doc(chatId)
         .collection("messages")
         .orderBy("timestamp", "desc")

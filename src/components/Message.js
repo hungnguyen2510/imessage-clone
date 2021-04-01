@@ -12,9 +12,8 @@ const Message = ({
     <div className={`message ${user.email === email && "message_sender"}`}>
       <Avatar src={photo} className="message_photo"></Avatar>
       <p>{message}</p>
-      <small>{new Date(timestamp?.toDate()).toLocaleDateString()}</small>
+      <small>{new Date(timestamp?.toDate()).toLocaleString()}</small>
     </div>
   );
 };
-
 export default Message;
