@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "../Chat.css";
-import MicNoneIcon from "@material-ui/icons/MicNone";
-import { IconButton } from "@material-ui/core";
 import Message from "./Message";
 import { useChatId, useChatName } from "../features/chatSlice";
 import db from "./../firebase";
@@ -71,9 +69,6 @@ const Chat = () => {
           />
           <button onClick={sendMessage}>Send Messages</button>
         </form>
-        <IconButton>
-          <MicNoneIcon className="chat_mic"></MicNoneIcon>
-        </IconButton>
       </div>
     </div>
   );
